@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // confirm 확인 true 취소 false
+      /*
+      let isDelete = confirm("삭제하시겠습니까?");
+      console.log(isDelete);
+      */
+
+      /*
+      const age = prompt("나이를 입력하세요");
+      console.log(age);
+      console.log(`10년 후에는 ${age + 10}살!`);
+      */
+
+      // prompt 입력된 값은 문자열로 처리
+      // 자바스크립트 타입에 따라서 연산의 종류가 달라진다.
+
+      console.log(
+        "%c======= 원시타입 =======",
+        "font-size:18px;font-weight:700"
+      );
+      // 원시 타입: 한 개의 값을 저장
+      let data = "hello";
+      console.log(data, typeof data, "문자열");
+
+      data = 20;
+      console.log(data, typeof data, "숫자형");
+      // 할당된 값에 따라서 변수의 타입이 변경되는 언어
+
+      data = true;
+      console.log(data, typeof data, "논리형(불리언)");
+
+      data = null; // 의도적인 빈값
+      console.log(data, typeof null, "null");
+      // 자바스크립트에 알려진 오류, 호환성위해서 수정되지 않음.
+
+      let data2;
+      console.log(data2, typeof data2, "undefined"); // 값이 할당되지 않음
+
+      console.log(
+        "%c======= 타입과 메서드 =======",
+        "font-size:18px;font-weight:700"
+      );
+      console.log("%c1. 문자", "font-size:16px; font-weight:700");
+      console.log("Hello World".indexOf("world")); // -1
+      console.log("Hello World".indexOf("World")); // 6
+      console.log("Hello World".includes("Hello"));
+
+      console.log("Python".toLowerCase()); // python, PYTHON, Python
+      console.log("JavaScript".toUpperCase());
+      console.log("name weniv".split(" ")); // 분리
+      console.log("    name weniv  ".trim().split(" ")); // 양옆 공백 제거
+
+      console.log("password12345".length);
+
+      let a = 5;
+      let b = 3;
+      console.log(`${a} + ${b} = ${a + b}`);
+
+      console.log("%c2. 숫자", "font-size:16px; font-weight:700");
+      console.log(`${a} + ${b} = ${a + b}`);
+      console.log(`${a} - ${b} = ${a - b}`);
+      console.log(`${a} * ${b} = ${a * b}`);
+      console.log(`${a} /  ${b} = ${a / b}`);
+      console.log(`${a} ** ${b} = ${a ** b}`);
+      console.log(`${a} % ${b} = ${a % b}`);
+      // 피연산자가 숫자
+
+      // 더하기 연산자 +
+      // 피연산자가 한개라도 문자열이라면 문자열 연결
+      console.log("20" + 10); // 2010
+
+      // 응답 문자열로 되어 있음 -> 산술연산을 수행하고 싶을때는
+      // 문자열 -> 숫자형으로 변경하는 형 변환 과정이 필요
+      console.log(parseInt("20.5"), typeof parseInt("20.5"));
+      console.log(parseFloat("20.565"), typeof parseFloat("20.565"));
+      console.log(parseFloat("20.5px"), typeof parseFloat("20.565px"));
+
+      console.log(Number("20.5"), typeof Number("20.5"));
+      console.log(Number("20.565"), typeof Number("20.565"));
+      console.log(Number("20.5px"), typeof Number("20.565px"));
+
+      // NaN(Not a Number) 숫자이지만 숫자로 표현할 수 없는 숫자값
+      // "Hello" * 3 -> "HelloHelloHello"
+      console.log("Hello" * 3);
+      console.log(NaN === NaN); // false
+      console.log(Number.isNaN("Hello" * 3)); // NaN 평가
+
+      console.log("%c3. boolean", "font-size:16px; font-weight:700");
+      // true, false -> 조건문, 단락평가, 논리연산
+      let isLoggedIn = false;
+      if (isLoggedIn) {
+        console.log("환영합니다!");
+      } else {
+        console.log("로그인하시겠습니까?");
+      }
+
+      // and(&&), or(||), not(!) 의 논리 연산
+      console.log(true && false); // true and false
+      console.log(true || true); // true or true
+      console.log(!false);
+
+      // 단락평가
+      // && : falsy한 값이 있으면 해당 값을, 아니면 가장 마지막 값을 결정
+      console.log(1 && true && "weniv");
+      // || :truthy한 값이 있으면 해당 값을, 아니면 가장 마지막 값을 결정
+      console.log(0 || "weniv" || null || "hello");
+
+      isLoggedIn = false;
+      isLoggedIn && console.log("로그인한 사용자가 볼 수 있는 화면");
+      !isLoggedIn && console.log("로그인 화면 출력");
+
+      // 비교 연산
+      // 자바스크립트 동등 ==, 일치 ===
+      let x = 10;
+      console.log("x == 10", x == 10);
+      console.log("x == '10'", x == "10"); // true, 자동으로 타입 변환
+
+      console.log("x === 10", x === 10);
+      console.log("x === '10'", x === "10"); // false
+      // === 일치 연산자는 값도 동일, 타입도 동일 (자동 타입 변환X)
+
+      console.log(x != 20); // 부등 연산
+      console.log(x !== 20); // 불일치 연산
+
+      console.log("\n".repeat(10));
+    </script>
+  </body>
+</html>

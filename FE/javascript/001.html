@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 자바스크립트 코드를 작성
+      // command + l + o / cntrl + l + O
+      console.log("Hello World");
+
+      // 개발자 도구 단축키
+      // f12, 오른쪽 마우스 -> 검사, command + shift + c
+
+      // 주석,  /* */ 여러줄 주석
+      // alert("환영합니다!");
+      // confirm("삭제하시겠습니까?");
+      // prompt("나이를 입력하세요: ");
+
+      // 변수 선언
+      // 변수 선언 키워드: let, const (var, ES6 문법을 사용해줘)
+      let name = "Hati";
+      let age = 20;
+
+      // f-string과 유사한 문법, 문자열에 변수를 넣는 문법
+      // 템플릿 리터럴: 문자열 백틱(`)으로 감싸고, ${} 안에 값을 작성
+      console.log(`이름은 ${name}, 나이는 ${age}살!`);
+      age += 1; // age = age + 1;
+      console.log(`내년에는 ${age}살입니다~`);
+
+      // let은 재할당 가능
+      // const 변수는 재할당이 불가
+      const nationality = "korea";
+      console.log(`국적은 ${nationality}입니다`);
+      // nationality = "canada";
+      let age2;
+      // 재할당 불가 -> 선언할때 할당을 해주어야 한다.
+      // const name2;
+
+      // 변수명 작성 규칙
+      // 1. 문자, 숫자, $, _만 사용 가능
+      // 2. 숫자로 시작이 불가능
+      // ---
+      // Python과의 차이
+      // 1. 예약어 종류의 차이
+      // 2. 네이밍 컨벤션 snake_convention_python / camelCaseJavaScript
+    </script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.log("1. 조건문");
+      // if-elif(->else if)-else
+      let score = 60;
+
+      if (score > 80) {
+        console.log("A");
+      } else if (score > 50) {
+        console.log("B");
+      } else {
+        console.log("F");
+      }
+
+      // swtich 분기 처리문
+      let today = new Date();
+      let day = today.getDay(); // 0 일 1 월 2 화 ... 6 토
+      switch (day) {
+        case 0:
+          console.log("일");
+          break;
+        case 1:
+          console.log("월");
+          break;
+        case 2:
+          console.log("화");
+          break;
+        case 3:
+          console.log("수");
+          break;
+        case 4:
+          console.log("목");
+          break;
+        case 5:
+          console.log("금");
+          break;
+        case 6:
+          console.log("토");
+          break;
+        default:
+          console.log("유효하지 않은 요일입니다");
+      }
+
+      // 삼항연산자
+      // Py: 참일때값 if 조건식 else 거짓일때값
+      // JS: 조건식 ? 참일때값 : 거짓일때값
+      let level = 30;
+      let grade = level > 25 ? "중급자" : "초급자";
+      console.log(grade);
+
+      console.log("2. 반복문");
+      // for(초기식;조건식;반복식){}
+      for (let i = 0; i < 10; i += 2) {
+        console.log(i);
+      }
+
+      // while
+      console.log("---");
+      let count = 1;
+      while (count < 5) {
+        console.log(count);
+        count++;
+      }
+
+      console.log("3. 함수");
+      // 함수 선언식
+      function sum(a, b) {
+        console.log("덧셈 계산 중 입니다...");
+        return a + b;
+      }
+      console.log(sum(10, 5));
+
+      // 함수 표현식
+      // 변수를 선언하고, 변수에 함수를 할당
+      const sub = function (a, b) {
+        console.log("뺄셈 계산 중 입니다...");
+        return a - b;
+      };
+      console.log(sub(10, 20));
+
+      // 화살표 함수 (함수 표현식)
+      const mul = (a, b) => {
+        console.log("곱셈 계산 중 입니다...");
+        return a * b;
+      };
+      console.log(mul(10, 3));
+
+      const square = (a) => a ** 2;
+      console.log(square(8));
+
+      console.log([10, 20, 30, 40].map((el) => el * 2));
+      console.log([1, 2, 3, 4, 5].filter((el) => !(el % 2)));
+    </script>
+  </body>
+</html>

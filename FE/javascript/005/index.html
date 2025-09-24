@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      button {
+        background-color: lightgray;
+        border: none;
+        border-radius: 8px;
+        padding: 4px 12px;
+      }
+      .clicked {
+        background-color: dodgerblue;
+        color: white;
+      }
+      .completed {
+        color: lightgray;
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM 조작</h1>
+    <button id="btn-click" class="tada">클릭해주세요</button>
+
+    <h2>To do List</h2>
+    <form id="todo-form">
+      <label for="todo-input">할 일 목록</label>
+      <input type="text" id="todo-input" />
+      <button type="submit">추가</button>
+    </form>
+    <ul id="todo-list"></ul>
+    <!-- script:src + tab -->
+    <script src="./script.js"></script>
+  </body>
+</html>

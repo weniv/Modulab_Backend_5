@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.log(
+        "%c======= 객체타입 =======",
+        "font-size:18px;font-weight:700"
+      );
+      // 여러 값을 저장
+      console.log("%c1. 객체 object", "font-size:16px; font-weight:700");
+
+      // key - value 쌍
+      const obj = {
+        name: "hati",
+        age: 20,
+        location: {
+          country: "korea",
+          city: "jeju",
+        },
+        "hobby-list": ["swimming", "yoga"],
+      };
+      console.log(obj);
+
+      // HTTP 응답 JSON -> 객체로 변환해서 사용
+      console.log(obj.name); // 점 접근법, 변수명 작성 규칙을 따른 키
+      console.log(obj["hobby-list"]); // 대괄호 접근법
+
+      obj.job = "FE"; // 추가
+      obj.age = 25; // 수정
+      delete obj["hobby-list"]; // 삭제
+      console.log(obj);
+
+      console.log(Object.keys(obj));
+      console.log(Object.values(obj));
+      console.log(Object.entries(obj));
+
+      console.log("%c2. 배열 array", "font-size:16px; font-weight:700");
+      // 순서가 보장된 데이터 타입
+      const arr = [10, 20, 30];
+      console.log(arr);
+
+      console.log(arr[0]);
+      console.log(arr[2]);
+
+      arr[2] = 100;
+      console.log(arr);
+      arr.push(15);
+      console.log(arr);
+      arr.pop();
+      console.log(arr);
+
+      const courseData = [
+        {
+          id: 1,
+          name: "파이썬 Fast API",
+          author: "라이캣",
+        },
+        {
+          id: 2,
+          name: "백엔드 개발자를 위한 자바스크립트 강의",
+          author: "하티",
+        },
+        {
+          id: 3,
+          name: "바이브 코딩 마스터",
+          author: "라이캣",
+        },
+        {
+          id: 4,
+          name: "프론트엔드 개발 이렇게 시작하세요!",
+          author: "로지",
+        },
+      ];
+      // 1. 요소 순회 map: 각 요소에 반복되는 동작
+      // 반환값을 이용해서 새로운 배열을 생성
+      const mapData = courseData.map((course) => {
+        console.log(course.name);
+        return course.author;
+      });
+      console.log(mapData);
+
+      // 2. filter: 반환값이 true인 경우 해당 요소를 새로운 배열
+      const filterData = courseData.filter((course) => {
+        console.log(course.author === "라이캣");
+        // 작가가 라이캣인지를 확인하고 싶습니다.
+        return course.author === "라이캣";
+      });
+      console.log(filterData);
+
+      courseData
+        .filter((course) => course.author === "라이캣")
+        .map((course) => {
+          console.log(course);
+        });
+
+      const findData = courseData.find((course) => course.author === "라이캣");
+      console.log("findData", findData);
+
+      console.log("\n".repeat(10));
+    </script>
+  </body>
+</html>
