@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시판 프로토타입</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        color: red;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* 헤더 스타일 */
+      .header {
+        background: #2c3e50;
+        color: white;
+        padding: 1rem 0;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        background: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background: #2980b9;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+      }
+
+      .btn-secondary:hover {
+        background: #7f8c8d;
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
+      .btn-success {
+        background: #27ae60;
+      }
+
+      .btn-success:hover {
+        background: #229954;
+      }
+
+      /* 페이지 섹션 스타일 */
+      .page-section {
+        display: none;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .page-section.active {
+        display: block;
+      }
+
+      .page-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+
+      /* 검색 바 스타일 */
+      .search-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        min-width: 200px;
+      }
+
+      .search-select {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background: white;
+      }
+
+      /* 폼 스타일 */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-group textarea {
+        height: 200px;
+        resize: vertical;
+      }
+
+      /* 게시물 리스트 스타일 */
+      .post-list {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .post-header {
+        background: #34495e;
+        color: white;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: 60px 1fr 150px 150px 100px;
+        gap: 15px;
+        font-weight: bold;
+      }
+
+      .post-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        display: grid;
+        grid-template-columns: 60px 1fr 150px 150px 100px;
+        gap: 15px;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .post-item:hover {
+        background: #f8f9fa;
+      }
+
+      .post-item:last-child {
+        border-bottom: none;
+      }
+
+      .post-title {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      /* 게시물 상세 스타일 */
+      .post-detail {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .post-detail-header {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .post-detail-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+      }
+
+      .post-meta {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .post-content {
+        padding: 30px;
+        line-height: 1.8;
+        font-size: 1rem;
+      }
+
+      .post-actions {
+        padding: 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+      }
+
+      /* 반응형 디자인 */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .search-container {
+          flex-direction: column;
+        }
+
+        .post-header,
+        .post-item {
+          grid-template-columns: 1fr;
+          gap: 5px;
+          text-align: left;
+        }
+
+        .post-header {
+          display: none;
+        }
+
+        .post-item {
+          padding: 10px;
+        }
+      }
+
+      /* 사용자 정보 스타일 */
+      .user-info {
+        background: #e8f5e8;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 30px;
+      }
+
+      .pagination button {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        background: white;
+        cursor: pointer;
+      }
+
+      .pagination button.active {
+        background: #3498db;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">나의 블로그</div>
+        <nav class="nav-buttons">
+          <button class="btn" onclick="showPage('main')">메인</button>
+          <button class="btn" onclick="showPage('posts')">게시물</button>
+          <button class="btn" id="auth-btn" onclick="showPage('login')">
+            로그인
+          </button>
+          <button
+            class="btn btn-secondary"
+            id="logout-btn"
+            onclick="logout()"
+            style="display: none"
+          >
+            로그아웃
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- 1. 메인 페이지 -->
+      <section id="main" class="page-section active">
+        <h1 class="page-title">메인 페이지</h1>
+        <div class="user-info" id="user-welcome" style="display: none">
+          <h3>환영합니다, <span id="username"></span>님!</h3>
+          <p>로그인 시간: <span id="login-time"></span></p>
+        </div>
+
+        <h3>최근 게시물</h3>
+        <div class="post-list">
+          <div class="post-header">
+            <div>번호</div>
+            <div>제목</div>
+            <div>작성자</div>
+            <div>작성일</div>
+            <div>조회수</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(1)">
+            <div>5</div>
+            <div class="post-title">백엔드 개발 팁 공유</div>
+            <div>developer123</div>
+            <div>2024-03-15</div>
+            <div>245</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(2)">
+            <div>4</div>
+            <div class="post-title">데이터베이스 최적화 방법</div>
+            <div>dbexpert</div>
+            <div>2024-03-14</div>
+            <div>189</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(3)">
+            <div>3</div>
+            <div class="post-title">API 설계 베스트 프랙티스</div>
+            <div>apimaster</div>
+            <div>2024-03-13</div>
+            <div>312</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 로그인 페이지 -->
+      <section id="login" class="page-section">
+        <h1 class="page-title">로그인</h1>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-email">이메일:</label>
+            <input type="email" id="login-email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">비밀번호:</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn">로그인</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showPage('register')"
+          >
+            회원가입
+          </button>
+        </form>
+      </section>
+
+      <!-- 3. 회원가입 페이지 -->
+      <section id="register" class="page-section">
+        <h1 class="page-title">회원가입</h1>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="reg-username">사용자명:</label>
+            <input type="text" id="reg-username" name="username" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-email">이메일:</label>
+            <input type="email" id="reg-email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-password">비밀번호:</label>
+            <input type="password" id="reg-password" name="password" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-password-confirm">비밀번호 확인:</label>
+            <input
+              type="password"
+              id="reg-password-confirm"
+              name="password-confirm"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success">회원가입</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showPage('login')"
+          >
+            로그인으로
+          </button>
+        </form>
+      </section>
+
+      <!-- 4. 게시물 리스트 페이지 -->
+      <section id="posts" class="page-section">
+        <h1 class="page-title">게시물 리스트</h1>
+
+        <!-- 검색 기능 -->
+        <div class="search-container">
+          <select class="search-select">
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="author">작성자</option>
+          </select>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="검색어를 입력하세요..."
+            id="search-input"
+          />
+          <button class="btn" onclick="searchPosts()">검색</button>
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <button class="btn btn-success" onclick="showPage('create-post')">
+            글쓰기
+          </button>
+        </div>
+
+        <div class="post-list">
+          <div class="post-header">
+            <div>번호</div>
+            <div>제목</div>
+            <div>작성자</div>
+            <div>작성일</div>
+            <div>조회수</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(1)">
+            <div>10</div>
+            <div class="post-title">React와 Node.js 연동하기</div>
+            <div>frontend_dev</div>
+            <div>2024-03-20</div>
+            <div>98</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(2)">
+            <div>9</div>
+            <div class="post-title">MongoDB 스키마 설계 가이드</div>
+            <div>mongo_master</div>
+            <div>2024-03-19</div>
+            <div>156</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(3)">
+            <div>8</div>
+            <div class="post-title">JWT 토큰 인증 구현</div>
+            <div>security_pro</div>
+            <div>2024-03-18</div>
+            <div>203</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(4)">
+            <div>7</div>
+            <div class="post-title">Docker 컨테이너 최적화</div>
+            <div>devops_guru</div>
+            <div>2024-03-17</div>
+            <div>87</div>
+          </div>
+          <div class="post-item" onclick="showPostDetail(5)">
+            <div>6</div>
+            <div class="post-title">GraphQL vs REST API</div>
+            <div>api_architect</div>
+            <div>2024-03-16</div>
+            <div>234</div>
+          </div>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination">
+          <button>&lt;</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>&gt;</button>
+        </div>
+      </section>
+
+      <!-- 5. 게시물 작성 페이지 -->
+      <section id="create-post" class="page-section">
+        <h1 class="page-title">게시물 작성</h1>
+        <form onsubmit="handleCreatePost(event)">
+          <div class="form-group">
+            <label for="post-category">카테고리:</label>
+            <select id="post-category" name="category">
+              <option value="general">일반</option>
+              <option value="tech">기술</option>
+              <option value="qna">질문답변</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="post-title">제목:</label>
+            <input type="text" id="post-title" name="title" required />
+          </div>
+          <div class="form-group">
+            <label for="post-content">내용:</label>
+            <textarea id="post-content" name="content" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">작성완료</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showPage('posts')"
+          >
+            취소
+          </button>
+        </form>
+      </section>
+
+      <!-- 6. 게시물 상세 페이지 -->
+      <section id="post-detail" class="page-section">
+        <h1 class="page-title">게시물 상세</h1>
+        <div class="post-detail">
+          <div class="post-detail-header">
+            <h2 class="post-detail-title" id="detail-title">게시물 제목</h2>
+            <div class="post-meta">
+              <span>작성자: <strong id="detail-author">작성자명</strong></span>
+              |
+              <span>작성일: <strong id="detail-date">2024-03-20</strong></span>
+              |
+              <span>조회수: <strong id="detail-views">123</strong></span>
+            </div>
+          </div>
+          <div class="post-content" id="detail-content">
+            게시물 내용이 여기에 표시됩니다...
+          </div>
+          <div class="post-actions">
+            <button class="btn" onclick="showPage('posts')">목록으로</button>
+            <button class="btn btn-secondary" onclick="showPage('edit-post')">
+              수정
+            </button>
+            <button class="btn btn-danger" onclick="deletePost()">삭제</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. 게시물 수정 페이지 -->
+      <section id="edit-post" class="page-section">
+        <h1 class="page-title">게시물 수정</h1>
+        <form onsubmit="handleEditPost(event)">
+          <div class="form-group">
+            <label for="edit-category">카테고리:</label>
+            <select id="edit-category" name="category">
+              <option value="general">일반</option>
+              <option value="tech">기술</option>
+              <option value="qna">질문답변</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-title">제목:</label>
+            <input type="text" id="edit-title" name="title" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-content">내용:</label>
+            <textarea id="edit-content" name="content" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">수정완료</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showPage('post-detail')"
+          >
+            취소
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <script>
+      // 전역 상태
+      let isLoggedIn = false;
+      let currentUser = null;
+
+      // 페이지 전환 함수
+      function showPage(pageId) {
+        // 모든 페이지 숨기기
+        const pages = document.querySelectorAll(".page-section");
+        pages.forEach((page) => page.classList.remove("active"));
+
+        // 선택된 페이지 보이기
+        document.getElementById(pageId).classList.add("active");
+      }
+
+      // 로그인 처리
+      function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        // 여기에서 실제 로그인 API 호출
+        console.log("로그인 시도:", { email, password });
+
+        // 임시로 로그인 성공 처리
+        isLoggedIn = true;
+        currentUser = { email, username: "testuser" };
+        updateAuthUI();
+        showPage("main");
+        alert("로그인 성공!");
+      }
+
+      // 회원가입 처리
+      function handleRegister(event) {
+        event.preventDefault();
+        const username = document.getElementById("reg-username").value;
+        const email = document.getElementById("reg-email").value;
+        const password = document.getElementById("reg-password").value;
+        const passwordConfirm = document.getElementById(
+          "reg-password-confirm"
+        ).value;
+
+        if (password !== passwordConfirm) {
+          alert("비밀번호가 일치하지 않습니다.");
+          return;
+        }
+
+        // 여기에서 실제 회원가입 API 호출
+        console.log("회원가입 시도:", { username, email, password });
+
+        alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+        showPage("login");
+      }
+
+      // 로그아웃 처리
+      function logout() {
+        isLoggedIn = false;
+        currentUser = null;
+        updateAuthUI();
+        showPage("main");
+        alert("로그아웃되었습니다.");
+      }
+
+      // 인증 UI 업데이트
+      function updateAuthUI() {
+        const authBtn = document.getElementById("auth-btn");
+        const logoutBtn = document.getElementById("logout-btn");
+        const userWelcome = document.getElementById("user-welcome");
+        const username = document.getElementById("username");
+        const loginTime = document.getElementById("login-time");
+
+        if (isLoggedIn) {
+          authBtn.style.display = "none";
+          logoutBtn.style.display = "inline-block";
+          userWelcome.style.display = "block";
+          username.textContent = currentUser.username;
+          loginTime.textContent = new Date().toLocaleString();
+        } else {
+          authBtn.style.display = "inline-block";
+          logoutBtn.style.display = "none";
+          userWelcome.style.display = "none";
+        }
+      }
+
+      // 게시물 검색
+      function searchPosts() {
+        const searchTerm = document.getElementById("search-input").value;
+        console.log("검색어:", searchTerm);
+        // 여기에서 실제 검색 API 호출
+        alert("검색 기능: " + searchTerm);
+      }
+
+      // 게시물 상세 보기
+      function showPostDetail(postId) {
+        // 실제로는 API에서 게시물 데이터 가져오기
+        const samplePosts = {
+          1: {
+            title: "React와 Node.js 연동하기",
+            author: "frontend_dev",
+            date: "2024-03-20",
+            views: 98,
+            content: "React와 Node.js를 연동하는 방법에 대해 설명합니다...",
+          },
+          2: {
+            title: "MongoDB 스키마 설계 가이드",
+            author: "mongo_master",
+            date: "2024-03-19",
+            views: 156,
+            content: "MongoDB에서 효율적인 스키마를 설계하는 방법...",
+          },
+          3: {
+            title: "JWT 토큰 인증 구현",
+            author: "security_pro",
+            date: "2024-03-18",
+            views: 203,
+            content: "JWT를 사용한 안전한 인증 시스템 구축하기...",
+          },
+        };
+
+        const post = samplePosts[postId];
+        if (post) {
+          document.getElementById("detail-title").textContent = post.title;
+          document.getElementById("detail-author").textContent = post.author;
+          document.getElementById("detail-date").textContent = post.date;
+          document.getElementById("detail-views").textContent = post.views;
+          document.getElementById("detail-content").textContent = post.content;
+
+          // 수정 폼에도 데이터 설정
+          document.getElementById("edit-title").value = post.title;
+          document.getElementById("edit-content").value = post.content;
+        }
+
+        showPage("post-detail");
+      }
+
+      // 게시물 작성
+      function handleCreatePost(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const postData = {
+          category: formData.get("category"),
+          title: formData.get("title"),
+          content: formData.get("content"),
+        };
+
+        console.log("게시물 작성:", postData);
+        alert("게시물이 작성되었습니다!");
+        showPage("posts");
+      }
+
+      // 게시물 수정
+      function handleEditPost(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const postData = {
+          category: formData.get("category"),
+          title: formData.get("title"),
+          content: formData.get("content"),
+        };
+
+        console.log("게시물 수정:", postData);
+        alert("게시물이 수정되었습니다!");
+        showPage("post-detail");
+      }
+
+      // 게시물 삭제
+      function deletePost() {
+        if (confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+          console.log("게시물 삭제");
+          alert("게시물이 삭제되었습니다!");
+          showPage("posts");
+        }
+      }
+
+      // 페이지 로드 시 초기화
+      document.addEventListener("DOMContentLoaded", function () {
+        updateAuthUI();
+      });
+    </script>
+  </body>
+</html>

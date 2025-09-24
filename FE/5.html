@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>선택자</title>
+    <style>
+      * {
+        /* 전체 선택자 */
+        color: red;
+      }
+      p {
+        /* 태그 선택자 */
+        color: blue;
+      }
+      #title {
+        /* id 선택자 */
+        /* 스타일을 할때는 id 선택자를 사용하지 않음 */
+        color: green;
+      }
+      .sub-title {
+        /* class 선택자. 가장 흔하게 사용함 */
+        color: orange;
+      }
+      .bold {
+        font-weight: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 선택자 -->
+    <h1 id="title">선택자 공부중</h1>
+
+    <p class="sub-title">안녕하세요</p>
+    <p class="sub-title bold">반갑습니다.</p>
+    <p>공부중입니다.</p>
+  </body>
+</html>
