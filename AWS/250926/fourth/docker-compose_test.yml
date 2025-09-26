@@ -1,0 +1,55 @@
+services:
+  web:
+    # 방법 1: 단순히 Dockerfile 위치만 지정
+    build: ./web  # ./web 폴더에 있는 Dockerfile 사용
+    # 포트 매핑
+    ports: "8000:8000"
+  
+  database:
+    image: mysql:8.0  # Docker Hub에서 가져올 이미지
+
+    ports: "3306:3306"
+
+  web2:
+    volumes:
+      # 방법 1: 내 컴퓨터의 폴더와 연결
+      - ./my_code:/app     # 왼쪽: 내 컴퓨터 폴더
+                           # 오른쪽: 컨테이너 안 폴더
+
+      # 방법 2: 도커가 관리하는 저장소 사용
+      - db_data:/var/lib/mysql
+# volumes:  # 방법 2를 사용할 때는 여기에 정의 필요
+#   db_data:
+  web3:
+    environment:
+      # 방법 1: 직접 작성
+      - DEBUG=true
+      - API_KEY=mysecret
+
+      # 방법 2: 파일에서 가져오기
+    env_file:
+      - ./web.env
+
+  web4:
+    depends_on:
+      - db       # 데이터베이스가 먼저 시작된 후
+      - redis    # 레디스가 시작됨
+
+  db:
+    image: postgres
+
+  redis:
+    image: redis
+
+  web5:
+    networks:
+      - frontend   # 여러 네트워크에 연결 가능
+      - backend
+
+  db2:
+    networks:
+      - backend   # 데이터베이스는 backend 네트워크만 사용
+
+networks:  # 사용할 네트워크 정의
+  frontend:
+  backend:
