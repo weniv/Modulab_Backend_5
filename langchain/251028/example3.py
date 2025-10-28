@@ -12,7 +12,7 @@ load_dotenv()
 
 app = FastAPI()
 
-sessions = Dict[str, ChatMessageHistory] = {}
+sessions = {}
 
 
 def get_session_history(session_id: str):
