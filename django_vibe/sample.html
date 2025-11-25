@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div class="lg:col-span-3">
+        <div class="bg-black aspect-video mb-4">
+            <video controls class="w-full h-full">
+                <source src="{{ lesson.video_file.url }}" type="video/mp4">
+                브라우저가 비디오 태그를 지원하지 않습니다.
+            </video>
+        </div>
+        <div class="bg-white rounded shadow p-4">
+            <h1 class="text-xl font-bold">{{ lesson.title }}</h1>
+        </div>
+    </div>
+    <div class="bg-white rounded shadow">
+        <h2 class="font-bold p-4 border-b">커리큘럼</h2>
+        {% for l in lessons %}
+        <a href="{% url 'lesson_detail' course.id l.id %}"
+           class="block border-b p-3 text-sm hover:bg-gray-50 {% if l.id == lesson.id %}bg-blue-50{% endif %}">
+            <span class="text-gray-500 mr-2">{{ l.order }}.</span>
+            {{ l.title }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
